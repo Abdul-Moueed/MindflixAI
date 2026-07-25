@@ -548,22 +548,22 @@ Return strictly JSON with this schema:
             matchPercentage: Math.max(75, 95 - idx * 3),
             aiExplanation: item.reason || `This movie matches your current emotional state because of its unique tone and resonance with ${parsedData.moodTag}.`
           });
-        } else {
-          enrichedCurated.push({
-            id: `cur-${idx}-${Date.now()}`,
-            title: item.title || fallback.title,
-            year: item.year || fallback.year,
-            genre: item.genre || fallback.genre,
-            badge: item.badge || "AI Recommendation",
-            synopsis: fallback.synopsis,
-            imageUrl: fallback.imageUrl,
-            backdropUrl: fallback.backdropUrl,
-            voteAverage: 8.2,
-            matchPercentage: Math.max(75, 95 - idx * 3),
-            trailerUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(item.title + " official trailer")}`,
-            aiExplanation: item.reason || "This movie matches your current emotional state because of its compelling narrative tempo."
-          });
-        }
+       } else {
+    enrichedCurated.push({
+        id: `cur-${idx}-${Date.now()}`,
+        title: item.title,
+        year: item.year,
+        genre: item.genre,
+        badge: item.badge || "AI Recommendation",
+        synopsis: item.reason || "",
+        imageUrl: "",
+        backdropUrl: "",
+        voteAverage: 0,
+        matchPercentage: Math.max(75, 95 - idx * 3),
+        trailerUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(item.title + " official trailer")}`,
+        aiExplanation: item.reason || "Recommended based on your mood."
+    });
+}
       }
     }
 
