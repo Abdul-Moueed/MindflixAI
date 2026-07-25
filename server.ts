@@ -427,7 +427,6 @@ Your task:
 - Explain why every movie matches the user's emotions in 2–3 sentences.
 
 Return strictly JSON with this schema:
-Return strictly JSON with this schema:
 {
   "moodTag": "string",
   "confidence": 95,
