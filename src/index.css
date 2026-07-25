@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: #131313;
+    color: #e5e2e1;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, h4, .font-headline {
+    font-family: 'Montserrat', sans-serif;
+  }
+}
+
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.glass-card, .glass-panel {
+  background: rgba(15, 15, 15, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-gradient {
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8) 70%, #131313 100%);
+}
+
+.ai-gradient-text {
+  background: linear-gradient(90deg, #4cd6ff, #dcb8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ai-gradient-border {
+  border: 1px solid transparent;
+  background-image: linear-gradient(#0f0f0f, #0f0f0f), linear-gradient(to right, #7701d0, #007d9a);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.pulse-gradient, .ai-glow-button {
+  background: linear-gradient(135deg, #7701d0 0%, #007d9a 100%);
+  box-shadow: 0 0 20px rgba(119, 1, 208, 0.4);
+}
+
+.ai-glow-border {
+  position: relative;
+}
+.ai-glow-border::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(45deg, #4cd6ff, #dcb8ff);
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0.3;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.movie-card-stroke {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ai-pulse {
+  animation: pulse-glow 3s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(119, 1, 208, 0.4); }
+  50% { box-shadow: 0 0 25px rgba(76, 214, 255, 0.6); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.orb-blur {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+.neural-line {
+  stroke-dasharray: 100;
+  animation: dash 3s linear infinite;
+}
+
+@keyframes dash {
+  to { stroke-dashoffset: -200; }
+}
