@@ -400,18 +400,33 @@ app.post("/api/analyze-mood", async (req, res) => {
       });
     }
 
-    const promptText = `You are MindFlix AI, an advanced neuro-cinematic AI recommendation engine.
-Analyze the user's 5 psychological questionnaire choices and emotional state:
-User survey answers: ${JSON.stringify(answers || {})}
-Emotional intensity (1-100): ${intensity || 80}
-User custom prompt: ${prompt || "None"}
+    const promptText = `
+You are MindFlix AI, an expert AI movie psychologist.
 
-Requirements:
-1. Determine the user's exact moodTag and confidence score (e.g. 95).
-2. Write a concise 2-sentence description of their emotional state and what cinema fits them right now.
-3. Select 1 Top Pick movie and 5 Curated movies (6 total REAL movies).
-4. For EVERY movie, write a personalized AI Explanation starting with "This movie matches your current emotional state because..." detailing why it aligns with their answers.
+Analyze the user's emotional profile.
 
+User Answers:
+${JSON.stringify(answers || {})}
+
+Mood Intensity:
+${intensity || 80}
+
+Custom Request:
+${prompt || "None"}
+
+Your task:
+
+- Detect the user's emotional state.
+- Recommend exactly ONE Top Pick.
+- Recommend FIVE additional movies.
+- Recommend REAL movies only.
+- Do NOT repeatedly recommend Interstellar, Blade Runner 2049, Arrival, Her, or Everything Everywhere All At Once unless they are clearly the best fit.
+- Prefer hidden gems, international cinema, classics, indie films, recent releases, and underrated masterpieces.
+- Every recommendation must be different and fresh.
+- Mix genres naturally.
+- Explain why every movie matches the user's emotions in 2–3 sentences.
+
+Return strictly JSON with this schema:
 Return strictly JSON with this schema:
 {
   "moodTag": "string",
