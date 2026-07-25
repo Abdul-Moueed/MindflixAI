@@ -17,72 +17,21 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
   onToggleFavorite,
   favoriteIds
 }) => {
-  const moodTag = analysis?.moodTag || "Contemplative & Bittersweet Depth";
-  const confidence = analysis?.confidence || 96;
-  const description = analysis?.description || "Your answers reveal an introspective headspace seeking deep emotional depth and visual grandeur.";
+  // If analysis is not ready yet, show a minimal loading state
+  if (!analysis || !analysis.topPick) {
+    return (
+      <div className="fixed inset-0 z-50 bg-[#131313] flex flex-col items-center justify-center gap-4">
+        <div className="w-12 h-12 border-4 border-[#7701d0] border-t-transparent rounded-full animate-spin" />
+        <p className="text-[#e5e2e1]/60 text-sm">Preparing your recommendations…</p>
+      </div>
+    );
+  }
 
-  const topPick = analysis?.topPick || {
-    id: "top-default",
-    title: "Interstellar",
-    year: 2014,
-    genre: "Sci-Fi / Odyssey",
-    matchPercentage: 98,
-    synopsis: "When Earth becomes uninhabitable, a team of ex-NASA pilots travels through a wormhole near Saturn in search of a new home.",
-    tagline: "Top Pick for Existential Reflection",
-    imageUrl: "https://image.tmdb.org/t/p/w500/gEU2QrmL2GlM2E2f1C4L8fL34eM.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/xJHokMbljvjADYdit5fKSuV3v3v.jpg",
-    voteAverage: 8.7,
-    duration: "2h 49m",
-    director: "Christopher Nolan",
-    cast: ["Matthew McConaughey", "Anne Hathaway"],
-    trailerUrl: "https://www.youtube.com/watch?v=zSWdZVtXT7E",
-    aiExplanation: "This movie matches your current emotional state because it transforms solitude into an awe-inspiring exploration of human bond across space and time."
-  };
-
-  const curatedMovies: Movie[] = analysis?.curatedMovies && analysis.curatedMovies.length > 0 ? analysis.curatedMovies : [
-    {
-      id: "cur-1",
-      title: "Blade Runner 2049",
-      year: 2017,
-      genre: "Sci-Fi",
-      badge: "Neon Noir",
-      synopsis: "A young blade runner's discovery of a long-buried secret leads him to track down former blade runner Rick Deckard.",
-      imageUrl: "https://image.tmdb.org/t/p/w500/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
-      voteAverage: 8.3,
-      duration: "2h 44m",
-      matchPercentage: 94,
-      trailerUrl: "https://www.youtube.com/watch?v=gCcx85zbxz4",
-      aiExplanation: "This movie matches your current emotional state because of its rich neon aesthetics, atmospheric pacing, and quiet existential questioning."
-    },
-    {
-      id: "cur-2",
-      title: "Everything Everywhere All at Once",
-      year: 2022,
-      genre: "Sci-Fi / Comedy",
-      badge: "Multiverse Pick",
-      synopsis: "An overwhelmed woman is swept up into a multiverse adventure.",
-      imageUrl: "https://image.tmdb.org/t/p/w500/rA112A61IvlYI22LzM634P3y19a.jpg",
-      voteAverage: 8.8,
-      duration: "2h 19m",
-      matchPercentage: 92,
-      trailerUrl: "https://www.youtube.com/watch?v=wxN1T1uxQ2g",
-      aiExplanation: "This movie matches your current emotional state because it provides chaotic creative energy and emotional catharsis."
-    },
-    {
-      id: "cur-3",
-      title: "Her",
-      year: 2013,
-      genre: "Romance",
-      badge: "Indie Drama",
-      synopsis: "A lonely writer develops a deep relationship with an AI operating system.",
-      imageUrl: "https://image.tmdb.org/t/p/w500/yk49STP93S1AAnS6mP3eT20uJ5q.jpg",
-      voteAverage: 8.0,
-      duration: "2h 06m",
-      matchPercentage: 89,
-      trailerUrl: "https://www.youtube.com/watch?v=ne6p6MfLBbo",
-      aiExplanation: "This movie matches your current emotional state because of its melancholic near-future tenderness."
-    }
-  ];
+  const moodTag    = analysis.moodTag;
+  const confidence = analysis.confidence;
+  const description = analysis.description;
+  const topPick    = analysis.topPick;
+  const curatedMovies: Movie[] = analysis.curatedMovies ?? [];
 
   return (
     <div className="pt-20 pb-32 px-5 max-w-screen-xl mx-auto space-y-10 animate-fade-in">
