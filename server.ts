@@ -270,56 +270,115 @@ const DYNAMIC_MOVIE_LIBRARY = [
 
 const CURATED_CATALOG = DYNAMIC_MOVIE_LIBRARY;
 
-// Smart Dynamic Recommendation Engine (Generates custom picks based on user's exact questionnaire choices)
-function generateDynamicRecommendations(answers: any = {}, intensity: number = 80, customPrompt?: string) {
-  const text = (JSON.stringify(answers || {}) + " " + (customPrompt || "")).toLowerCase();
+// Maps the EXACT trait strings from questions.ts to movie library traits
+const TRAIT_TO_MOVIE_TRAIT: Record<string, string> = {
+  // Q1 - Sensory Environment
+  "Cozy Nostalgia":        "cozy",
+  "Bittersweet Depth":     "melancholy",
+  "Adrenaline Surge":      "action",
+  "Philosophical Sci-Fi":  "intellectual",
+  // Q2 - Emotional Needs
+  "Raw Emotional Drama":   "melancholy",
+  "Neo-Noir & Sci-Fi":     "mindbend",
+  "Action & High Stakes":  "action",
+  "Warm Comfort Cinema":   "cozy",
+  // Q3 - Architectural Portal
+  "Cyberpunk & AI":        "intellectual",
+  "Historical & Classic":  "melancholy",
+  "Psychological Identity":"mindbend",
+  "Cosmic Odyssey":        "intellectual",
+  // Q4 - Pacing & Tempo
+  "Slow Burn Art Cinema":  "melancholy",
+  "Character Driven":      "romance",
+  "High Speed Thriller":   "action",
+  "Surrealist Dreamscape": "mindbend",
+  // Q5 - Resolution & Finale
+  "Open Ended Masterpiece":"mindbend",
+  "Cathartic Redemption":  "romance",
+  "Heroic Climax":         "action",
+  "Awe-Inspiring Finale":  "intellectual",
+};
 
-  const scores: Record<string, number> = {
-    action: 0,
-    melancholy: 0,
-    cozy: 0,
-    mindbend: 0,
-    romance: 0,
-    dark: 0,
-    intellectual: 0,
-    fun: 0
+const MOOD_TAG_FOR_TRAIT: Record<string, string> = {
+  action:       "High-Octane Adrenaline & Action Surge",
+  melancholy:   "Deep Melancholy & Poetic Reflection",
+  cozy:         "Warm & Whimsical Emotional Comfort",
+  mindbend:     "Mind-Bending Psychological Mystery",
+  romance:      "Bittersweet Redemption & Heart Cinema",
+  dark:         "Dark Psychological Dilemma & Suspense",
+  intellectual: "Cosmic Awe & Existential Odyssey",
+  fun:          "Vibrant & Creative Multiverse Energy",
+};
+
+// Smart Dynamic Recommendation Engine — reads real questionnaire trait strings
+function generateDynamicRecommendations(answers: any = {}, intensity: number = 80, customPrompt?: string) {
+  // Count votes per movie-trait from the actual questionnaire answers
+  const traitVotes: Record<string, number> = {
+    action: 0, melancholy: 0, cozy: 0, mindbend: 0,
+    romance: 0, dark: 0, intellectual: 0, fun: 0
   };
 
-  for (const trait in scores) {
-    if (text.includes(trait)) scores[trait] += 4;
+  // Parse each question answer's trait string into a movie-trait vote
+  if (answers && typeof answers === "object") {
+    for (const key of Object.keys(answers)) {
+      const val = String(answers[key]);
+      // Extract the trait part after "Trait: "
+      const traitMatch = val.match(/Trait:\s*(.+)$/);
+      if (traitMatch) {
+        const rawTrait = traitMatch[1].trim();
+        const mapped = TRAIT_TO_MOVIE_TRAIT[rawTrait];
+        if (mapped && mapped in traitVotes) {
+          traitVotes[mapped] += 3;
+        }
+      }
+    }
   }
 
-  if (text.includes("thrill") || text.includes("chase") || text.includes("explosion") || text.includes("speed")) scores.action += 3;
-  if (text.includes("sad") || text.includes("rain") || text.includes("nostalgia") || text.includes("lonely")) scores.melancholy += 3;
-  if (text.includes("warm") || text.includes("cozy") || text.includes("gentle") || text.includes("soft")) scores.cozy += 3;
-  if (text.includes("twist") || text.includes("puzzle") || text.includes("mystery") || text.includes("weird")) scores.mindbend += 3;
-  if (text.includes("love") || text.includes("heart") || text.includes("crush") || text.includes("couple")) scores.romance += 3;
-  if (text.includes("grim") || text.includes("intense") || text.includes("scary") || text.includes("serial")) scores.dark += 3;
-  if (text.includes("space") || text.includes("deep") || text.includes("future") || text.includes("ai")) scores.intellectual += 3;
+  // Also scan custom prompt text for extra signals
+  const promptLower = (customPrompt || "").toLowerCase();
+  if (promptLower.includes("action") || promptLower.includes("thrill") || promptLower.includes("fast")) traitVotes.action += 2;
+  if (promptLower.includes("sad") || promptLower.includes("melanchol") || promptLower.includes("nostalgia")) traitVotes.melancholy += 2;
+  if (promptLower.includes("cozy") || promptLower.includes("warm") || promptLower.includes("comfort")) traitVotes.cozy += 2;
+  if (promptLower.includes("mystery") || promptLower.includes("twist") || promptLower.includes("mindbend")) traitVotes.mindbend += 2;
+  if (promptLower.includes("romance") || promptLower.includes("love") || promptLower.includes("heart")) traitVotes.romance += 2;
+  if (promptLower.includes("dark") || promptLower.includes("grim") || promptLower.includes("horror")) traitVotes.dark += 2;
+  if (promptLower.includes("space") || promptLower.includes("sci-fi") || promptLower.includes("cosmic")) traitVotes.intellectual += 2;
+  if (promptLower.includes("fun") || promptLower.includes("comedy") || promptLower.includes("laugh")) traitVotes.fun += 2;
 
-  for (const k in scores) {
-    scores[k] += Math.random() * 2;
-  }
+  // Add small randomness so same trait ties break differently each run
+  for (const k in traitVotes) traitVotes[k] += Math.random() * 1.5;
 
-  const sortedTraits = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-  const primaryTrait = sortedTraits[0][0];
+  // Pick the dominant trait
+  const sorted = Object.entries(traitVotes).sort((a, b) => b[1] - a[1]);
+  const primaryTrait = sorted[0][0];
+  const secondaryTrait = sorted[1][0];
 
-  let moodTag = "Contemplative & Atmospheric Resonance";
-  if (primaryTrait === "action") moodTag = "High-Octane Adrenaline & Action Focus";
-  else if (primaryTrait === "melancholy") moodTag = "Deep Melancholy & Poetic Reflection";
-  else if (primaryTrait === "cozy") moodTag = "Warm & Whimsical Emotional Comfort";
-  else if (primaryTrait === "mindbend") moodTag = "Mind-Bending Psychological Mystery";
-  else if (primaryTrait === "romance") moodTag = "Near-Future Bittersweet Romance";
-  else if (primaryTrait === "dark") moodTag = "Dark Psychological Dilemma & Suspense";
-  else if (primaryTrait === "intellectual") moodTag = "Cosmic Awe & Existential Odyssey";
-  else if (primaryTrait === "fun") moodTag = "Vibrant & Creative Multiverse Energy";
+  const moodTag = MOOD_TAG_FOR_TRAIT[primaryTrait] || "Contemplative & Atmospheric Resonance";
 
-  const matchedMovies = DYNAMIC_MOVIE_LIBRARY.filter(m => m.traits.includes(primaryTrait));
-  const topCandidate = matchedMovies.length > 0 ? matchedMovies[0] : DYNAMIC_MOVIE_LIBRARY[Math.floor(Math.random() * DYNAMIC_MOVIE_LIBRARY.length)];
+  // Pick top movie matching primary trait, shuffle secondary-trait matches for variety
+  const primaryMatches = DYNAMIC_MOVIE_LIBRARY.filter(m => m.traits.includes(primaryTrait));
+  const secondaryMatches = DYNAMIC_MOVIE_LIBRARY.filter(m =>
+    !m.traits.includes(primaryTrait) && m.traits.includes(secondaryTrait)
+  );
+  const others = DYNAMIC_MOVIE_LIBRARY.filter(m =>
+    !m.traits.includes(primaryTrait) && !m.traits.includes(secondaryTrait)
+  );
 
-  const remaining = DYNAMIC_MOVIE_LIBRARY.filter(m => m.id !== topCandidate.id);
-  const shuffled = [...remaining].sort(() => 0.5 - Math.random());
-  const curated = shuffled.slice(0, 3).map((m, idx) => ({
+  // Shuffle each bucket for variety
+  const shufflePrimary = [...primaryMatches].sort(() => Math.random() - 0.5);
+  const shuffleSecondary = [...secondaryMatches].sort(() => Math.random() - 0.5);
+  const shuffleOthers = [...others].sort(() => Math.random() - 0.5);
+
+  const topCandidate = shufflePrimary[0] || shuffleSecondary[0] || shuffleOthers[0];
+
+  // Curated: pick from secondary, then others, never duplicate top pick
+  const curatedPool = [
+    ...shufflePrimary.slice(1),
+    ...shuffleSecondary,
+    ...shuffleOthers
+  ].filter(m => m.id !== topCandidate.id);
+
+  const curated = curatedPool.slice(0, 3).map((m, idx) => ({
     id: `cur-${idx}-${Date.now()}`,
     title: m.title,
     year: m.year,
@@ -330,7 +389,7 @@ function generateDynamicRecommendations(answers: any = {}, intensity: number = 8
     backdropUrl: m.backdropUrl,
     voteAverage: m.voteAverage,
     duration: m.duration,
-    matchPercentage: Math.max(75, 95 - idx * 3),
+    matchPercentage: Math.max(75, 95 - idx * 4),
     trailerUrl: m.trailerUrl,
     aiExplanation: m.explanation
   }));
@@ -338,10 +397,10 @@ function generateDynamicRecommendations(answers: any = {}, intensity: number = 8
   return {
     success: true,
     moodTag,
-    confidence: Math.min(99, Math.max(88, Math.floor(intensity * 0.95 + Math.random() * 5))),
-    description: `Your responses indicate a ${primaryTrait}-leaning emotional state seeking tailored cinematic resonance.`,
+    confidence: Math.min(99, Math.max(88, Math.floor(intensity * 0.9 + Math.random() * 8))),
+    description: `Your questionnaire choices reveal a strong ${moodTag.toLowerCase()} emotional profile — these films are matched directly to your psychological responses.`,
     genres: [topCandidate.genre.split("/")[0].trim()],
-    keywords: [primaryTrait, "cinematic", "mood-matched"],
+    keywords: [primaryTrait, secondaryTrait, "mood-matched"],
     topPick: {
       id: `top-${Date.now()}`,
       title: topCandidate.title,
