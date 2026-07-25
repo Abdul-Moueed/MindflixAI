@@ -82,11 +82,17 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
           className="relative w-full rounded-3xl overflow-hidden glass-card border border-[#e50914]/40 group cursor-pointer transition-all duration-500 hover:scale-[1.01] shadow-2xl flex flex-col md:flex-row"
         >
           {/* Backdrop Image Frame */}
-          <div className="relative w-full md:w-1/2 aspect-video md:aspect-auto min-h-[260px] overflow-hidden bg-black">
+          <div className="relative w-full md:w-1/2 aspect-video md:aspect-auto min-h-[260px] overflow-hidden bg-[#1a1a2e]">
             <img
-              src={topPick.backdropUrl || topPick.imageUrl}
+              src={topPick.backdropUrl && topPick.backdropUrl !== '' ? topPick.backdropUrl : topPick.imageUrl}
               alt={topPick.title}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              onError={(e) => {
+                const img = e.currentTarget;
+                if (img.src !== topPick.imageUrl && topPick.imageUrl) {
+                  img.src = topPick.imageUrl;
+                }
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent md:bg-gradient-to-r md:from-transparent md:to-[#1a191b]"></div>
             
@@ -208,11 +214,17 @@ export const RecommendationsView: React.FC<RecommendationsViewProps> = ({
                 className="glass-card rounded-3xl border border-white/10 overflow-hidden flex flex-col justify-between group cursor-pointer hover:border-[#e50914]/50 transition-all duration-300 hover:-translate-y-1 shadow-xl"
               >
                 {/* Image Poster */}
-                <div className="relative aspect-video w-full overflow-hidden bg-black">
+                <div className="relative aspect-video w-full overflow-hidden bg-[#1a1a2e]">
                   <img
-                    src={movie.backdropUrl || movie.imageUrl}
+                    src={movie.backdropUrl && movie.backdropUrl !== '' ? movie.backdropUrl : movie.imageUrl}
                     alt={movie.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      if (img.src !== movie.imageUrl && movie.imageUrl) {
+                        img.src = movie.imageUrl;
+                      }
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#131313] via-transparent to-transparent"></div>
 
