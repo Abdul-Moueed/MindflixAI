@@ -500,6 +500,9 @@ Return strictly JSON with this schema:
     });
 
     const parsedData = JSON.parse(geminiResponse.text || "{}");
+    console.log("===== GEMINI RESPONSE =====");
+console.log(JSON.stringify(parsedData, null, 2));
+console.log("===========================");
 
     // Enrich Top Pick with real TMDB details if available
     let enrichedTopPick = { ...parsedData.topPick };
