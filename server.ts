@@ -537,7 +537,8 @@ Return strictly JSON with this schema:
       for (let idx = 0; idx < parsedData.curatedMovies.length; idx++) {
         const item = parsedData.curatedMovies[idx];
         const tmdbItem = await fetchTMDBMovieDetails(item.title, tmdbKey);
-        const fallback = CURATED_CATALOG[(idx + 1) % CURATED_CATALOG.length];
+       const fallback =
+  CURATED_CATALOG[Math.floor(Math.random() * CURATED_CATALOG.length)];
 
         if (tmdbItem) {
           enrichedCurated.push({
