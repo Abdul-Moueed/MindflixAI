@@ -454,7 +454,7 @@ Return strictly JSON with this schema:
 }`;
 
     const geminiResponse = await ai.models.generateContent({
-      model: "gemini-3.6-flash",
+      model: "gemini-2.5-flash",
       contents: promptText,
       config: {
         responseMimeType: "application/json",
