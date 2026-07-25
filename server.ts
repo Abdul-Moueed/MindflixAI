@@ -77,12 +77,14 @@ const getGeminiClient = () => {
 };
 
 // High quality movie catalog for rich fallbacks
-const CURATED_CATALOG = [
+// Rich movie catalog covering all emotional traits & genres
+const DYNAMIC_MOVIE_LIBRARY = [
   {
     id: "m-interstellar",
     title: "Interstellar",
     year: 2014,
     genre: "Sci-Fi / Adventure",
+    traits: ["intellectual", "sci-fi", "melancholy"],
     badge: "Cosmic Odyssey",
     synopsis: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
     imageUrl: "https://image.tmdb.org/t/p/w500/gEU2QrmL2GlM2E2f1C4L8fL34eM.jpg",
@@ -91,13 +93,15 @@ const CURATED_CATALOG = [
     duration: "2h 49m",
     director: "Christopher Nolan",
     cast: ["Matthew McConaughey", "Anne Hathaway"],
-    trailerUrl: "https://www.youtube.com/watch?v=zSWdZVtXT7E"
+    trailerUrl: "https://www.youtube.com/watch?v=zSWdZVtXT7E",
+    explanation: "Matches your deep desire for awe, existential grandeur, and emotional connection across space and time."
   },
   {
     id: "m-bladerunner",
     title: "Blade Runner 2049",
     year: 2017,
     genre: "Sci-Fi / Cyberpunk",
+    traits: ["sci-fi", "melancholy", "dark"],
     badge: "Neon Noir",
     synopsis: "A young blade runner's discovery of a long-buried secret leads him to track down former blade runner Rick Deckard.",
     imageUrl: "https://image.tmdb.org/t/p/w500/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
@@ -105,70 +109,259 @@ const CURATED_CATALOG = [
     voteAverage: 8.3,
     duration: "2h 44m",
     director: "Denis Villeneuve",
-    cast: ["Ryan Gosling", "Harrison Ford", "Ana de Armas"],
-    trailerUrl: "https://www.youtube.com/watch?v=gCcx85zbxz4"
+    cast: ["Ryan Gosling", "Harrison Ford"],
+    trailerUrl: "https://www.youtube.com/watch?v=gCcx85zbxz4",
+    explanation: "Perfect for a moody, neon-lit contemplative state craving atmospheric immersion and philosophical depth."
   },
   {
-    id: "m-everything",
-    title: "Everything Everywhere All at Once",
-    year: 2022,
-    genre: "Sci-Fi / Comedy",
-    badge: "Multiverse Mind-Bender",
-    synopsis: "A middle-aged Chinese immigrant is swept up into an insane adventure where she alone can save existence by exploring other universes.",
-    imageUrl: "https://image.tmdb.org/t/p/w500/rA112A61IvlYI22LzM634P3y19a.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/4fTo33yInq4E0c9Xq2mI8aY17m0.jpg",
-    voteAverage: 8.8,
-    duration: "2h 19m",
-    director: "Daniel Kwan, Daniel Scheinert",
-    cast: ["Michelle Yeoh", "Ke Huy Quan", "Jamie Lee Curtis"],
-    trailerUrl: "https://www.youtube.com/watch?v=wxN1T1uxQ2g"
+    id: "m-madmax",
+    title: "Mad Max: Fury Road",
+    year: 2015,
+    genre: "Action / Sci-Fi",
+    traits: ["action", "thrill", "dark"],
+    badge: "High-Octane Thrill",
+    synopsis: "In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland with the aid of a group of female prisoners.",
+    imageUrl: "https://image.tmdb.org/t/p/w500/8tZYtuWezp8TbZHYdGbdToYV7Sp.jpg",
+    backdropUrl: "https://image.tmdb.org/t/p/w1280/nlCH7ToYFi5zMMURuLnFvMpeqXA.jpg",
+    voteAverage: 8.1,
+    duration: "2h 00m",
+    director: "George Miller",
+    cast: ["Tom Hardy", "Charlize Theron"],
+    trailerUrl: "https://www.youtube.com/watch?v=hEJnMQGLai8",
+    explanation: "Delivers relentless, visceral adrenaline and breathtaking visual choreography for a high-intensity mood."
+  },
+  {
+    id: "m-darkknight",
+    title: "The Dark Knight",
+    year: 2008,
+    genre: "Action / Crime",
+    traits: ["action", "dark", "thrill"],
+    badge: "Masterpiece Crime Thriller",
+    synopsis: "When the menace known as the Joker wreaks havoc and chaos on Gotham, Batman must accept one of the greatest psychological tests.",
+    imageUrl: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    backdropUrl: "https://image.tmdb.org/t/p/w1280/nMK2819TyGZfqB19j2vY3v3v.jpg",
+    voteAverage: 8.5,
+    duration: "2h 32m",
+    director: "Christopher Nolan",
+    cast: ["Christian Bale", "Heath Ledger"],
+    trailerUrl: "https://www.youtube.com/watch?v=EXeTwQWrcwY",
+    explanation: "Satisfies your demand for complex psychological tension, moral dilemmas, and gripping high-stakes drama."
   },
   {
     id: "m-her",
     title: "Her",
     year: 2013,
     genre: "Romance / Sci-Fi",
+    traits: ["romance", "melancholy", "cozy"],
     badge: "Bittersweet Romance",
-    synopsis: "In a near future, a lonely writer develops an unlikely relationship with an operating system designed to meet his every need.",
+    synopsis: "A lonely writer develops an unlikely relationship with an AI operating system designed to meet his every need.",
     imageUrl: "https://image.tmdb.org/t/p/w500/yk49STP93S1AAnS6mP3eT20uJ5q.jpg",
     backdropUrl: "https://image.tmdb.org/t/p/w1280/gL2Y68Q8W1d8o72X2c0v1M1I0m0.jpg",
     voteAverage: 8.0,
     duration: "2h 06m",
     director: "Spike Jonze",
-    cast: ["Joaquin Phoenix", "Scarlett Johansson", "Amy Adams"],
-    trailerUrl: "https://www.youtube.com/watch?v=ne6p6MfLBbo"
+    cast: ["Joaquin Phoenix", "Scarlett Johansson"],
+    trailerUrl: "https://www.youtube.com/watch?v=ne6p6MfLBbo",
+    explanation: "Resonates with your longing for emotional warmth, introspection, and soft near-future nostalgia."
   },
   {
-    id: "m-arrival",
-    title: "Arrival",
-    year: 2016,
-    genre: "Sci-Fi / Drama",
-    badge: "Intellectual Mystery",
-    synopsis: "A linguist works with the military to communicate with alien lifeforms after twelve mysterious spacecraft appear around the world.",
-    imageUrl: "https://image.tmdb.org/t/p/w500/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/a9XBDAON4K8mE1pI0nN7p1xN10p.jpg",
-    voteAverage: 7.9,
-    duration: "1h 56m",
-    director: "Denis Villeneuve",
-    cast: ["Amy Adams", "Jeremy Renner", "Forest Whitaker"],
-    trailerUrl: "https://www.youtube.com/watch?v=tFMo3UJ4B4g"
+    id: "m-spiritedaway",
+    title: "Spirited Away",
+    year: 2001,
+    genre: "Animation / Fantasy",
+    traits: ["cozy", "fun", "whimsical"],
+    badge: "Whimsical Masterpiece",
+    synopsis: "During her family's move to the suburbs, a 10-year-old girl wanders into a world ruled by gods, witches, and spirits.",
+    imageUrl: "https://image.tmdb.org/t/p/w500/39wmItE2FMv4F9Rocfb1WWh9Ziv.jpg",
+    backdropUrl: "https://image.tmdb.org/t/p/w1280/Ab8JuJhF1z6d76Wv3v.jpg",
+    voteAverage: 8.5,
+    duration: "2h 05m",
+    director: "Hayao Miyazaki",
+    cast: ["Rumi Hiiragi", "Miyu Irino"],
+    trailerUrl: "https://www.youtube.com/watch?v=ByXuk9QqQkk",
+    explanation: "Provides pure magical enchantment and cozy comfort for a heart seeking imaginative wonder."
   },
   {
-    id: "m-oppenheimer",
-    title: "Oppenheimer",
-    year: 2023,
-    genre: "Drama / History",
-    badge: "Oscar Winner",
-    synopsis: "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.",
-    imageUrl: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv3K3wL_3x.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/fm6K8O119S3m32eK5L99xN1p20p.jpg",
-    voteAverage: 8.9,
-    duration: "3h 00m",
+    id: "m-inception",
+    title: "Inception",
+    year: 2010,
+    genre: "Sci-Fi / Action",
+    traits: ["mindbend", "action", "intellectual"],
+    badge: "Mind-Bending Heist",
+    synopsis: "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+    imageUrl: "https://image.tmdb.org/t/p/w500/ljs28On2SSxD1dF0hZ0YjF0a85.jpg",
+    backdropUrl: "https://image.tmdb.org/t/p/w1280/s3TBrRGB1iav7y5v.jpg",
+    voteAverage: 8.4,
+    duration: "2h 28m",
     director: "Christopher Nolan",
-    cast: ["Cillian Murphy", "Emily Blunt", "Matt Damon"],
-    trailerUrl: "https://www.youtube.com/watch?v=uYPbbksJxIg"
+    cast: ["Leonardo DiCaprio", "Joseph Gordon-Levitt"],
+    trailerUrl: "https://www.youtube.com/watch?v=YoHD9XEInc0",
+    explanation: "Engages your analytical curiosity with multi-layered dream logic and sleek action."
+  },
+  {
+    id: "m-parasite",
+    title: "Parasite",
+    year: 2019,
+    genre: "Thriller / Drama",
+    traits: ["dark", "mindbend", "intellectual"],
+    badge: "Palme d'Or Winner",
+    synopsis: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
+    imageUrl: "https://image.tmdb.org/t/p/w500/7IiTqvZfyKG0vTzW2F6tM1.jpg",
+    backdropUrl: "https://image.tmdb.org/t/p/w1280/hiSl10v7pW2x.jpg",
+    voteAverage: 8.5,
+    duration: "2h 12m",
+    director: "Bong Joon Ho",
+    cast: ["Song Kang-ho", "Lee Sun-kyun"],
+    trailerUrl: "https://www.youtube.com/watch?v=5xH0HfJHsaY",
+    explanation: "Delivers razor-sharp social commentary and unpredictable twists for a thrill-seeking mind."
+  },
+  {
+    id: "m-spiderverse",
+    title: "Spider-Man: Across the Spider-Verse",
+    year: 2023,
+    genre: "Animation / Action",
+    traits: ["fun", "action", "cozy"],
+    badge: "Visual Wonder",
+    synopsis: "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People charged with protecting its very existence.",
+    imageUrl: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj7sfd8.jpg",
+    backdropUrl: "https://image.tmdb.org/t/p/w1280/4XM8L3v.jpg",
+    voteAverage: 8.4,
+    duration: "2h 20m",
+    director: "Joaquim Dos Santos",
+    cast: ["Shameik Moore", "Hailee Steinfeld"],
+    trailerUrl: "https://www.youtube.com/watch?v=cqGjhVJWtEg",
+    explanation: "Immerses you in groundbreaking artistic creativity, fast-paced energy, and heartfelt character bonds."
+  },
+  {
+    id: "m-shutterisland",
+    title: "Shutter Island",
+    year: 2010,
+    genre: "Mystery / Thriller",
+    traits: ["mindbend", "dark"],
+    badge: "Psychological Thriller",
+    synopsis: "In 1954, a U.S. Marshal investigates the disappearance of a murderer who escaped from a hospital for the criminally insane.",
+    imageUrl: "https://image.tmdb.org/t/p/w500/4BgSWydCwW0vTzX12.jpg",
+    backdropUrl: "https://image.tmdb.org/t/p/w1280/s3vW2x.jpg",
+    voteAverage: 8.2,
+    duration: "2h 18m",
+    director: "Martin Scorsese",
+    cast: ["Leonardo DiCaprio", "Mark Ruffalo"],
+    trailerUrl: "https://www.youtube.com/watch?v=5iaYLCiq5A8",
+    explanation: "Creates an eerie, haunting atmospheric puzzle that keeps your mind guessing until the final reveal."
+  },
+  {
+    id: "m-lalaland",
+    title: "La La Land",
+    year: 2016,
+    genre: "Romance / Drama",
+    traits: ["romance", "cozy", "melancholy"],
+    badge: "Vibrant & Bittersweet",
+    synopsis: "While navigating their careers in Los Angeles, a pianist and an actress fall in love while attempting to reconcile their aspirations.",
+    imageUrl: "https://image.tmdb.org/t/p/w500/uDO8hOhdDwxKhEChyvuVKhvYiyB.jpg",
+    backdropUrl: "https://image.tmdb.org/t/p/w1280/v2x1W.jpg",
+    voteAverage: 7.9,
+    duration: "2h 08m",
+    director: "Damien Chazelle",
+    cast: ["Ryan Gosling", "Emma Stone"],
+    trailerUrl: "https://www.youtube.com/watch?v=0pdqf4P9MB8",
+    explanation: "Blends glowing visual music with bittersweet real-life romance for a passionate, soulful mood."
   }
 ];
+
+const CURATED_CATALOG = DYNAMIC_MOVIE_LIBRARY;
+
+// Smart Dynamic Recommendation Engine (Generates custom picks based on user's exact questionnaire choices)
+function generateDynamicRecommendations(answers: any = {}, intensity: number = 80, customPrompt?: string) {
+  const text = (JSON.stringify(answers || {}) + " " + (customPrompt || "")).toLowerCase();
+
+  const scores: Record<string, number> = {
+    action: 0,
+    melancholy: 0,
+    cozy: 0,
+    mindbend: 0,
+    romance: 0,
+    dark: 0,
+    intellectual: 0,
+    fun: 0
+  };
+
+  for (const trait in scores) {
+    if (text.includes(trait)) scores[trait] += 4;
+  }
+
+  if (text.includes("thrill") || text.includes("chase") || text.includes("explosion") || text.includes("speed")) scores.action += 3;
+  if (text.includes("sad") || text.includes("rain") || text.includes("nostalgia") || text.includes("lonely")) scores.melancholy += 3;
+  if (text.includes("warm") || text.includes("cozy") || text.includes("gentle") || text.includes("soft")) scores.cozy += 3;
+  if (text.includes("twist") || text.includes("puzzle") || text.includes("mystery") || text.includes("weird")) scores.mindbend += 3;
+  if (text.includes("love") || text.includes("heart") || text.includes("crush") || text.includes("couple")) scores.romance += 3;
+  if (text.includes("grim") || text.includes("intense") || text.includes("scary") || text.includes("serial")) scores.dark += 3;
+  if (text.includes("space") || text.includes("deep") || text.includes("future") || text.includes("ai")) scores.intellectual += 3;
+
+  for (const k in scores) {
+    scores[k] += Math.random() * 2;
+  }
+
+  const sortedTraits = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const primaryTrait = sortedTraits[0][0];
+
+  let moodTag = "Contemplative & Atmospheric Resonance";
+  if (primaryTrait === "action") moodTag = "High-Octane Adrenaline & Action Focus";
+  else if (primaryTrait === "melancholy") moodTag = "Deep Melancholy & Poetic Reflection";
+  else if (primaryTrait === "cozy") moodTag = "Warm & Whimsical Emotional Comfort";
+  else if (primaryTrait === "mindbend") moodTag = "Mind-Bending Psychological Mystery";
+  else if (primaryTrait === "romance") moodTag = "Near-Future Bittersweet Romance";
+  else if (primaryTrait === "dark") moodTag = "Dark Psychological Dilemma & Suspense";
+  else if (primaryTrait === "intellectual") moodTag = "Cosmic Awe & Existential Odyssey";
+  else if (primaryTrait === "fun") moodTag = "Vibrant & Creative Multiverse Energy";
+
+  const matchedMovies = DYNAMIC_MOVIE_LIBRARY.filter(m => m.traits.includes(primaryTrait));
+  const topCandidate = matchedMovies.length > 0 ? matchedMovies[0] : DYNAMIC_MOVIE_LIBRARY[Math.floor(Math.random() * DYNAMIC_MOVIE_LIBRARY.length)];
+
+  const remaining = DYNAMIC_MOVIE_LIBRARY.filter(m => m.id !== topCandidate.id);
+  const shuffled = [...remaining].sort(() => 0.5 - Math.random());
+  const curated = shuffled.slice(0, 3).map((m, idx) => ({
+    id: `cur-${idx}-${Date.now()}`,
+    title: m.title,
+    year: m.year,
+    genre: m.genre,
+    badge: m.badge,
+    synopsis: m.synopsis,
+    imageUrl: m.imageUrl,
+    backdropUrl: m.backdropUrl,
+    voteAverage: m.voteAverage,
+    duration: m.duration,
+    matchPercentage: Math.max(75, 95 - idx * 3),
+    trailerUrl: m.trailerUrl,
+    aiExplanation: m.explanation
+  }));
+
+  return {
+    success: true,
+    moodTag,
+    confidence: Math.min(99, Math.max(88, Math.floor(intensity * 0.95 + Math.random() * 5))),
+    description: `Your responses indicate a ${primaryTrait}-leaning emotional state seeking tailored cinematic resonance.`,
+    genres: [topCandidate.genre.split("/")[0].trim()],
+    keywords: [primaryTrait, "cinematic", "mood-matched"],
+    topPick: {
+      id: `top-${Date.now()}`,
+      title: topCandidate.title,
+      year: topCandidate.year,
+      genre: topCandidate.genre,
+      matchPercentage: 98,
+      synopsis: topCandidate.synopsis,
+      tagline: topCandidate.badge,
+      imageUrl: topCandidate.imageUrl,
+      backdropUrl: topCandidate.backdropUrl,
+      voteAverage: topCandidate.voteAverage,
+      duration: topCandidate.duration,
+      director: topCandidate.director,
+      cast: topCandidate.cast,
+      trailerUrl: topCandidate.trailerUrl,
+      aiExplanation: topCandidate.explanation
+    },
+    curatedMovies: curated
+  };
+}
 
 // Helper to fetch TMDB movie details
 async function fetchTMDBMovieDetails(title: string, tmdbKey?: string) {
@@ -342,62 +535,8 @@ app.post("/api/analyze-mood", async (req, res) => {
     const tmdbKey = process.env.TMDB_API_KEY;
 
     if (!ai) {
-      // Fallback response with full structured JSON & AI explanations
-      return res.json({
-        success: true,
-        moodTag: "Contemplative & Bittersweet Depth",
-        confidence: 96,
-        description: "Your responses reflect a gentle, introspective mood seeking rich emotional storytelling and cinematic grandeur.",
-        topPick: {
-          id: "top-interstellar",
-          title: "Interstellar",
-          year: 2014,
-          genre: "Sci-Fi / Odyssey",
-          matchPercentage: 98,
-          synopsis: "When Earth becomes uninhabitable, a team of ex-NASA pilots travels through a wormhole near Saturn in search of a new home.",
-          tagline: "Top Pick for Existential Reflection",
-          imageUrl: CURATED_CATALOG[0].imageUrl,
-          backdropUrl: CURATED_CATALOG[0].backdropUrl,
-          voteAverage: 8.7,
-          duration: "2h 49m",
-          director: "Christopher Nolan",
-          cast: ["Matthew McConaughey", "Anne Hathaway"],
-          trailerUrl: "https://www.youtube.com/watch?v=zSWdZVtXT7E",
-          aiExplanation: "This movie matches your current emotional state because it transforms feelings of isolation into a grand, awe-inspiring journey of cosmic love and human perseverance."
-        },
-        curatedMovies: [
-          {
-            ...CURATED_CATALOG[1],
-            matchPercentage: 94,
-            badge: "Neon Noir",
-            aiExplanation: "Matches your reflective headspace with a mesmerizing, atmospheric cyberpunk world and quiet, poetic storytelling."
-          },
-          {
-            ...CURATED_CATALOG[2],
-            matchPercentage: 92,
-            badge: "Multiverse Mind-Bender",
-            aiExplanation: "Provides emotional catharsis and joy by turning chaos and existential overwhelm into a heartfelt celebration of small tender moments."
-          },
-          {
-            ...CURATED_CATALOG[3],
-            matchPercentage: 89,
-            badge: "Bittersweet Romance",
-            aiExplanation: "Resonates with your longing for deep connection and introspection through a warm, melancholy near-future love story."
-          },
-          {
-            ...CURATED_CATALOG[4],
-            matchPercentage: 87,
-            badge: "Intellectual Mystery",
-            aiExplanation: "Aligns with your quiet intellectual focus through a profound, calm exploration of communication, time, and empathy."
-          },
-          {
-            ...CURATED_CATALOG[5],
-            matchPercentage: 85,
-            badge: "Oscar Winner",
-            aiExplanation: "Challenging, intense historical drama that mirrors your demand for high-stakes moral dilemmas and gripping tension."
-          }
-        ]
-      });
+      // Dynamic fallback response based on user's exact questionnaire choices & mood intensity
+      return res.json(generateDynamicRecommendations(answers, intensity, prompt));
     }
 
     const promptText = `
@@ -582,23 +721,7 @@ console.log("===========================");
     });
   } catch (error: any) {
     console.error("Error analyzing mood:", error);
-    // Return high quality fallback
-    return res.json({
-      success: true,
-      moodTag: "Contemplative & Bittersweet Depth",
-      confidence: 94,
-      description: "Your responses reflect a gentle, introspective mood seeking rich emotional storytelling.",
-      topPick: {
-        ...CURATED_CATALOG[0],
-        matchPercentage: 98,
-        aiExplanation: "This movie matches your current emotional state because it transforms solitude into an awe-inspiring exploration of human bond."
-      },
-      curatedMovies: CURATED_CATALOG.slice(1).map((m, idx) => ({
-        ...m,
-        matchPercentage: 92 - idx * 2,
-        aiExplanation: "This movie matches your current emotional state because of its captivating visual tone and mood alignment."
-      }))
-    });
+    return res.json(generateDynamicRecommendations(req.body.answers, req.body.intensity, req.body.prompt));
   }
 });
 
